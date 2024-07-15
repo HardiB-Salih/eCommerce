@@ -1,27 +1,39 @@
 import { format } from "date-fns";
 import React from "react";
-import BillboardClient from "./components/client";
+import ProductClient from "./components/client";
 import prismadb from "@/lib/prismadb";
-import { BillboardColumn } from "./components/columns";
+import { ProductColumn } from "./components/columns";
+import { formatter } from "@/lib/utils";
 
-interface BillboardsProps {
+interface ProductsProps {
   params: { storeId: string };
 }
 
-const BillboardsPage: React.FC<BillboardsProps> = async ({ params }) => {
-  const billboards = await prismadb.billboard.findMany({
+const ProductsPage: React.FC<ProductsProps> = async ({ params }) => {
+  const produncts = await prismadb.product.findMany({
     where: {
       storeId: params.storeId,
+    },
+    include: {
+      category: true,
+      size: true,
+      color: true,
     },
     orderBy: {
       createAt: "desc",
     },
   });
 
-  const formattedBillboards: BillboardColumn[] = billboards.map((item) => {
+  const formattedProducts: ProductColumn[] = produncts.map((item) => {
     return {
       id: item.id,
-      label: item.label,
+      name: item.name,
+      isFeatured: item.isFeatured,
+      isArchived: item.isArchived,
+      price: formatter.format(item.price.toNumber()),
+      category: item.category.name,
+      size: item.size.name,
+      color: item.color.value,
       createAt: format(item.createAt, "MMMM do, yyyy"),
     };
   });
@@ -29,10 +41,10 @@ const BillboardsPage: React.FC<BillboardsProps> = async ({ params }) => {
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <BillboardClient data={formattedBillboards} />
+        <ProductClient data={formattedProducts} />
       </div>
     </div>
   );
 };
 
-export default BillboardsPage;
+export default ProductsPage;
