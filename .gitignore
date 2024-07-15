@@ -42,3 +42,9 @@ ecommerce-admin/node_modules/
 ecommerce-admin/.env*.local
 ecommerce-admin/.env
 ecommerce-admin/.vercel
+
+ecommerce-store/.next/
+ecommerce-store/node_modules/
+ecommerce-store/.env*.local
+ecommerce-store/.env
+ecommerce-store/.vercel
