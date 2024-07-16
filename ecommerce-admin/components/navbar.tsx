@@ -1,20 +1,15 @@
-import { UserButton } from "@clerk/nextjs";
 import React from "react";
-import MainNav from "@/components/main-nav";
-import StoreSwitcher from "./store-switcher";
+import { UserButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import MainNav from "@/components/main-nav";
+import StoreSwitcher from "@/components/store-switcher";
 import prismadb from "@/lib/prismadb";
+import { ThemeToggle } from "@/components/theme-toggle";
 
-interface NavbarProps {
-  // Define props here
-}
+interface NavbarProps {}
 
-const Navbar: React.FC<NavbarProps> = async (
-  {
-    /* props */
-  }
-) => {
+const Navbar: React.FC<NavbarProps> = async ({}) => {
   const { userId } = auth();
   if (!userId) {
     redirect("/sign-in");
@@ -32,6 +27,7 @@ const Navbar: React.FC<NavbarProps> = async (
         <StoreSwitcher items={stores} />
         <MainNav className="mx-4" />
         <div className="ml-auto flex items-center space-x-4">
+          <ThemeToggle />
           <UserButton afterSignOutUrl="/" />
         </div>
       </div>

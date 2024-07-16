@@ -8,6 +8,8 @@ import NavbarActions from "./navbar-actions";
 
 interface NavbarProps {}
 
+export const revalidate = 0;
+
 const Navbar: React.FC<NavbarProps> = async ({}) => {
   const categories = await getCategories();
   return (
